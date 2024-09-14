@@ -53,4 +53,11 @@ test("True Positive Test - Correct credtials - excpected to login correctly" , a
 
 })
 
+
+/*
+To Do - Test items page:
+1. price 
+2. visibility 
+*/
+
     
