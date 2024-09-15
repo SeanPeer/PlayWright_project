@@ -1,4 +1,6 @@
 import {login_screen} from "../Mapping/login_page_map"
+import {login} from "../utils/function_utils"
+
 
 const {test, expect} = require('@playwright/test');
 const { assert, time } = require('console');
@@ -26,12 +28,8 @@ test('False Positive Test - Insering wrong credtials - Expecting error message',
 
     const expected_error = 'Incorrect username/password.'
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
-    await page.locator(login_screen.username).fill("Sean")
-    await page.locator(login_screen.password).fill("123456")
-    await page.locator(login_screen.user_checlbox).click()
-    await page.locator(login_screen.agree_checkbox).click()
-    await page.locator(login_screen.sign_button).click()
   
+    await login(page,'sean','1234')
     // const actual_error = await page.locator(login_screen.error_message).textContent()
 
     await expect(page.locator(login_screen.error_message)).toContainText(expected_error)
@@ -43,15 +41,36 @@ test('False Positive Test - Insering wrong credtials - Expecting error message',
 test("True Positive Test - Correct credtials - excpected to login correctly" , async({browser, page}) => {
 
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
-    await page.locator(login_screen.username).fill("rahulshettyacademy")
-    await page.locator(login_screen.password).fill("learning")
-    await page.locator(login_screen.user_checlbox).click()
-    await page.locator(login_screen.agree_checkbox).click()
-    await page.locator(login_screen.sign_button).click()
+    await login(page,'rahulshettyacademy', 'learning')
 
     await expect(page.locator(login_screen.iphone)).toBeVisible()
 
+
+
+
 })
+
+
+test.only("Test validation of items - title & price" , async({browser, page}) => {
+
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
+    await login(page,'rahulshettyacademy', 'learning')
+
+    const expected_titles = [ 'iphone X', 'Samsung Note 8', 'Nokia Edge', 'Blackberry' ]
+    const expected_prices = [ '$24.99', '$24.99', '$24.99', '$24.99' ] 
+    await page.locator(login_screen.items_title).first().waitFor();  
+    const actual_titles = await page.locator(login_screen.items_title).allTextContents()
+    const actual_prices = await page.locator(login_screen.items_price).allTextContents()
+    console.log(await page.locator(login_screen.items_title).first().textContent())
+    console.log(actual_prices)
+
+    expect(actual_titles).toEqual(expected_titles)  
+    expect(actual_prices).toEqual(expected_prices)
+   
+    
+
+})
+
 
 
 /*
