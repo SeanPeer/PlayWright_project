@@ -51,7 +51,7 @@ test("True Positive Test - Correct credtials - excpected to login correctly" , a
 })
 
 
-test.only("Test validation of items - title & price" , async({browser, page}) => {
+test("Test validation of items - title & price" , async({browser, page}) => {
 
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     await login(page,'rahulshettyacademy', 'learning')
